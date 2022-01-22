@@ -10,20 +10,33 @@
 
     <div class="container">
        <div class="form-group">
-        <select name="animacoes" id="selectAnimacoes" class="form-control" v-model="animacaoSelecionada">
-          <option value="fade">Fade</option>
-          <option value="zoom">Zoom</option>
-          <option value="slide">Slide</option>
-        </select>
-      </div>
+         <label>Animações:</label>
+          <select name="animacoes" id="selectAnimacoes" class="form-control" v-model="animacaoSelecionada">
+            <option value="fade">Fade</option>
+            <option value="zoom">Zoom</option>
+            <option value="slide">Slide</option>
+          </select>
+       </div>
 
-      <button class="btn btn-primary mb-3" @click="mostrar = !mostrar">Alternar</button>
+        <div class="form-group">
+          <label>Mensagem:</label>
+            <select name="mensagem" id="selectMensagens" class="form-control" v-model="alertaAtual">
+              <option value="info">Informação</option>
+              <option value="warning">Alerta</option>
+              <option value="success">Sucesso</option>
+            </select>
+        </div>
 
-      <!-- 2 Elementos diferentes dentro do transition com if e else funcionam, mas com 2 divs ou seja 2 elementos iguais, o vue precisa de uma key pra saber q sao 2 elementos diferentes-->
       <transition :name="animacaoSelecionada" mode="out-in">
+        <div :class="classeDeAlerta" :key="alertaAtual"> {{ mensagemDinamica }}</div>
+      </transition>
+
+      <!-- <button class="btn btn-primary mb-3" @click="mostrar = !mostrar">Alternar</button> -->
+      <!-- 2 Elementos diferentes dentro do transition com if e else funcionam, mas com 2 divs ou seja 2 elementos iguais, o vue precisa de uma key pra saber q sao 2 elementos diferentes-->
+      <!-- <transition :name="animacaoSelecionada" mode="out-in">
         <div class="alert alert-info" v-if="mostrar" key="info"> Animações no Vue (informação)</div>
         <div class="alert alert-success" v-else key="success"> Animações no Vue (success)</div>
-      </transition>
+      </transition> -->
 
       <!--Java Script Hooks-->
       <!-- <transition 
@@ -85,7 +98,21 @@ export default {
    data(){
      return{
        mostrar: true,
-       animacaoSelecionada: 'fade'
+       animacaoSelecionada: 'fade',
+       alertaAtual: 'info'
+     }
+   },
+   computed:{
+     classeDeAlerta(){
+       return{
+         alert: true,
+         [`alert-${this.alertaAtual}`]: true
+       }
+     },
+     mensagemDinamica(){
+        if(this.alertaAtual ==='info') return 'Animações no Vue (Informação)'
+        else if( this.alertaAtual ==='warning') return 'Animações no Vue (Alerta)'
+        else return'Animações no Vue (Sucesso)'
      }
    },
    methods:{
