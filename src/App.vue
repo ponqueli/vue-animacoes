@@ -10,8 +10,34 @@
 
     <div class="container">
       <button class="btn btn-primary mb-3" @click="mostrar = !mostrar">Alternar</button>
+
+      <!--Java Script Hooks-->
+      <!-- <transition 
+        appear
+
+        @before-enter="beforeEnter"
+        @enter="enter"
+        @after-enter="afterEnter"
+        @enter-cancelled="enterCancelled"
+
+        @before-leave="beforeLeave"
+        @leave="leave"
+        @after-leave="afterLeave"
+        @leave-cancelled="leaveCancelled"
+        
+        :css="false"
+
+        >
+        <div class="alert alert-primary" v-if="mostrar">Animações no Vue</div>
+      </transition> -->
+
       <!--https://animate.style -->
       <transition 
+        appear
+        appear-class=""
+        appear-active-class="animate__animated animate__flipInY"
+        appear-to-class=""
+        
         enter-class=""
         enter-active-class="animate__animated animate__zoomInDown"
         enter-to-class=""
@@ -46,6 +72,59 @@ export default {
      return{
        mostrar: true
      }
+   },
+   methods:{
+     beforeEnter(el){
+      console.log("BeforeEnter ")
+      el.style.opacity = 0
+     },
+     enter(el, done){
+      console.log("enter "+el)
+      let contagem = 0
+      const intervalo = setInterval(()=>{
+        el.style.opacity = + el.style.opacity + 0.1
+        contagem++
+        if(contagem > 10 ){
+          clearInterval(intervalo)
+          done()
+        }
+      }, 150 )
+
+     },
+     afterEnter(el){
+       console.log("afterEnter "+el)
+     },
+     enterCancelled(el){
+       console.log("enterCancelled "+el)
+     },
+
+      beforeLeave(el){
+        console.log("beforeLeave ")
+        el.style.transition = 'width 0.5s'
+        el.style.overflow = 'hidden'
+        el.style.whiteSpace = 'nowrap'
+      },
+      leave(el, done){
+        console.log("Leave ")
+        let contagem = 0
+        const tamanho = el.offsetWidth
+
+        const intervalo = setInterval(()=>{
+          el.style.width = (tamanho * (1 - (contagem / 10))) + 'px'
+          contagem++
+
+          if( contagem > 10 ){
+            clearInterval(intervalo)
+            done()
+          }
+        }, 150 )
+      },
+      afterLeave(el){
+        console.log("afterLeave "+el)
+      },
+      leaveCancelled(el){
+        console.log("LeaveCancelled "+el)
+      },
    }
 }
 </script>
