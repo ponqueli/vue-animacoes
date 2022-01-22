@@ -19,8 +19,10 @@
 
       <button class="btn btn-primary mb-3" @click="mostrar = !mostrar">Alternar</button>
 
-      <transition :name="animacaoSelecionada">
-        <div class="alert alert-primary" v-if="mostrar"> Animações no Vue</div>
+      <!-- 2 Elementos diferentes dentro do transition com if e else funcionam, mas com 2 divs ou seja 2 elementos iguais, o vue precisa de uma key pra saber q sao 2 elementos diferentes-->
+      <transition :name="animacaoSelecionada" mode="out-in">
+        <div class="alert alert-info" v-if="mostrar" key="info"> Animações no Vue (informação)</div>
+        <div class="alert alert-success" v-else key="success"> Animações no Vue (success)</div>
       </transition>
 
       <!--Java Script Hooks-->
@@ -160,7 +162,7 @@ export default {
   
   .slide-leave-active{
     animation: slide 0.7s reverse;
-    transition: opacity 2s;
+    transition: opacity 0.7s;
   }
 
   @keyframes slide {
