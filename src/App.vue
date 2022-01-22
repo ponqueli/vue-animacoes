@@ -3,13 +3,25 @@
     
     <div class="jumbotron jumbotron-fluid">
       <div class="container">
-        <h1 class="dsplay-4">Animações</h1>
+        <h1 class="display-4">Animações</h1>
         <div class="lead">Treinando transição/animação de elementos/componentes no Vue.</div>
       </div>
     </div>
 
     <div class="container">
+       <div class="form-group">
+        <select name="animacoes" id="selectAnimacoes" class="form-control" v-model="animacaoSelecionada">
+          <option value="fade">Fade</option>
+          <option value="zoom">Zoom</option>
+          <option value="slide">Slide</option>
+        </select>
+      </div>
+
       <button class="btn btn-primary mb-3" @click="mostrar = !mostrar">Alternar</button>
+
+      <transition :name="animacaoSelecionada">
+        <div class="alert alert-primary" v-if="mostrar"> Animações no Vue</div>
+      </transition>
 
       <!--Java Script Hooks-->
       <!-- <transition 
@@ -32,12 +44,12 @@
       </transition> -->
 
       <!--https://animate.style -->
-      <transition 
+      <!-- <transition 
         appear
         appear-class=""
         appear-active-class="animate__animated animate__flipInY"
         appear-to-class=""
-        
+
         enter-class=""
         enter-active-class="animate__animated animate__zoomInDown"
         enter-to-class=""
@@ -47,7 +59,7 @@
         leave-to-class=""
         >
         <div class="alert alert-primary" v-if="mostrar">Animações no Vue</div>
-      </transition>
+      </transition> -->
 
       <!-- <transition name="fade">
         <div class="alert alert-primary" v-if="mostrar">Animações no Vue</div>
@@ -70,7 +82,8 @@
 export default {
    data(){
      return{
-       mostrar: true
+       mostrar: true,
+       animacaoSelecionada: 'fade'
      }
    },
    methods:{
@@ -176,4 +189,5 @@ export default {
   .fade-enter-active, .fade-leave-active{
     transition: opacity 1s;
   }
+
 </style>
