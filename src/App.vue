@@ -9,73 +9,42 @@
     </div>
 
     <div class="container">
+        <h3 class="font-weight-light">Animações de Estado</h3> 
+        <div class="form-group">
+          <input class="form-control" v-model="numero" step="50">
+        </div>
 
-      <h3 class="font-weight-light">Tecnologias</h3> 
-      <div class="row">
-        <div class="col-sm-10">
-          <div class="form-group">
-            <input 
-              type="text"
-              class="form-control"
-              placeholder="Insira um novo item e pressione Enter"
-              @keyup.enter="adicionar"
-              ref="input">
-          </div>
+        <div class="alert alert-info">
+            <h3 class="font-weight-light">
+                <strong>Numero: </strong>
+                <span>{{ numeroAnimado }}</span>
+            </h3>
         </div>
       </div>
-
-      <transition-group tag="ul" class="list-group" name="list">
-        <li 
-          class="list-group-item"
-          v-for="(tecnologia, indice) in tecnologias"
-          :key="tecnologia">
-          <span> {{ tecnologia }} </span>
-          <button 
-            class="btn btn-danger btn-sm float-right"
-            @click="remover(indice)"
-            >X
-          </button>
-        </li>
-      </transition-group>
-
-      <div class="col-sm-2 mt-3 pl-0">
-        <button class="btn btn-info" @click="embaralhar">Embaralhar</button>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 
-import { shuffle } from 'lodash'
+import { gsap } from 'gsap'
 
 export default {
 
   data(){
     return{
-      tecnologias:[
-        'JavaScript',
-        'Vue JS',
-        'Vuex',
-        'Vue Router'
-      ]
+     numero: 0,
+     numeroInterpolado: 0
     }
   },
-  methods:{
-    adicionar(event){
-      const novoItem = event.target.value
-      if(novoItem){
-        const indice = Math.floor(Math.random() * this.tecnologias.length)
-        this.tecnologias.splice(indice, 0, novoItem)
-        this.$refs.input.value = ''
-      }
-    },
-    remover(indice){
-      this.tecnologias.splice(indice, 1)
-    },
-    embaralhar(){
-      this.tecnologias = shuffle(this.tecnologias)
+  computed:{
+    numeroAnimado(){
+      return this.numeroInterpolado.toFixed(0)
     }
+  },
+  watch:{
+      numero(novoNumero){
+          gsap.to(this.$data, 2, { numeroInterpolado: novoNumero })
+      }
   }
 }
 </script>
@@ -86,18 +55,5 @@ export default {
   font-family: 'Ubuntu', sans-serif;
   width: 100%;
   height: 100%;
-}
-
-.list-enter, .list-leave-to{
-  opacity: 0;
-  transform:  translateX(-70px);
-}
-
-.list-enter-active, .list-leave-active, .list-move{
-  transition: all 1s;
-}
-.list-leave-active{
-  position: absolute;
-  width: calc(76% - 10px);
 }
 </style>
